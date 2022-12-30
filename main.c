@@ -27,12 +27,14 @@ int main(int argc, char *argv[])
     fp = fopen("top-sample.csv", "r");
     if (fp == NULL)
     {
+        printf("Error opening list file\n");
         exit(EXIT_FAILURE);
     }
 
     sfp = fopen("success.txt", "a");
     if (sfp == NULL)
     {
+        printf("Error opening success file\n");
         exit(EXIT_FAILURE);
     }
 
