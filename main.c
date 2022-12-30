@@ -56,35 +56,30 @@ int main(int argc, char *argv[])
             }
         }
 
-        curl = curl_easy_init();
-        if (curl)
+        char *url = strtok(record[1], "\r\n");
+        if (url)
         {
-            char *url = strtok(record[1], "\r\n");
-            if (url)
+            curl = curl_easy_init();
+            if (curl)
             {
-                curl = curl_easy_init();
-                if (curl)
+                printf("Checking: %s\n", url);
+
+                curl_easy_setopt(curl, CURLOPT_URL, url);
+                curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
+                curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
+                curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
+                curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
+                curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
+                curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, header_callback);
+
+                res = curl_easy_perform(curl);
+                if (res != CURLE_OK)
                 {
-                    printf("Checking: %s\n", url);
-
-                    curl_easy_setopt(curl, CURLOPT_URL, url);
-                    curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
-                    curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
-                    curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
-                    curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
-                    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
-                    curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, header_callback);
-
-                    res = curl_easy_perform(curl);
-                    if (res != CURLE_OK)
-                    {
-                        // fprintf(stderr, "curl_easy_perform() failed: %s", curl_easy_strerror(res));
-                        continue;
-                    }
+                    continue;
                 }
             }
-            curl_easy_cleanup(curl);
         }
+        curl_easy_cleanup(curl);
     }
 
     fclose(fp);
