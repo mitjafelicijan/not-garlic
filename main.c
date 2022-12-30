@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     size_t len = 0;
     ssize_t read;
 
-    fp = fopen("top.csv", "r");
+    fp = fopen("top-sample.csv", "r");
     if (fp == NULL)
     {
         exit(EXIT_FAILURE);
